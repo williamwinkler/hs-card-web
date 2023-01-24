@@ -5,7 +5,7 @@ const url = "http://localhost:3030";
 class HsCardClient {
   async GetCards() {
     try {
-      const res = await axios.get(url + "/cards");
+      const res = await axios.get(url + "/cards?type=4&limit=8");
       return res.data;
     } catch (err) {
       console.log("Error: " + err);
