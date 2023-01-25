@@ -1,4 +1,5 @@
 import React from "react";
+import Pagination from "./Pagination";
 
 export default function CardList(props) {
   const cards = props.cards;
@@ -8,15 +9,13 @@ export default function CardList(props) {
   }
 
   return (
-    <div className="cardList">
-      {/* <ul>
+    <>
+      <div className="cardList">
         {cards.map((card) => {
-          return <li key={card.id}>{card.name}</li>;
+          return <img src={card.image} key={card.id} height="400rem"></img>;
         })}
-      </ul> */}
-      {cards.map((card) => {
-        return <img src={card.image} key={card.id}></img>;
-      })}
-    </div>
+      </div>
+      <Pagination pagination={props.pagination} func={props.func} />
+    </>
   );
 }

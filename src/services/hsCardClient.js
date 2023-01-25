@@ -3,9 +3,12 @@ import axios from "axios";
 const url = "http://localhost:3030";
 
 class HsCardClient {
-  async GetCards() {
+  async GetCards(query) {
+    if (!query) {
+      query = "";
+    }
     try {
-      const res = await axios.get(url + "/cards?type=4&limit=8");
+      const res = await axios.get(url + "/cards?limit=10" + query);
       return res.data;
     } catch (err) {
       console.log("Error: " + err);

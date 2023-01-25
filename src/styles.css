@@ -12,6 +12,7 @@ body {
   padding: 2rem;
   background-color: #333;
   color: white;
+  border-radius: 1rem;
 }
 
 .container {
@@ -23,10 +24,10 @@ body {
   background-color: #333;
   color: white;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: stretch;
   gap: 2rem;
-  padding: 0 1rem;
+  padding: 0.5rem 1rem;
 }
 
 .site-title {
@@ -52,6 +53,7 @@ body {
 
 .nav li.active {
   background-color: #555;
+  border-radius: 0.5rem;
 }
 
 .nav li:hover {
@@ -63,11 +65,23 @@ body {
   padding: 1rem;
   margin: 1%;
   border-radius: 1rem;
+  color: white;
+}
+
+.cardFilter input {
+  background-color: lightgray;
+  border-radius: 0.25rem;
+  opacity: 90%;
 }
 
 .cardList {
-  padding: 0.25rem;
+  padding: 1rem 0.25rem;
   background-color: #777;
   margin: 1%;
   border-radius: 1rem;
 }
+
+/* .pagination button {
+  size: 2rem;
+  align-items: center;
+} */
