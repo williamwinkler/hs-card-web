@@ -30,7 +30,7 @@ export default function Pagination(props) {
         onClick={handleBackClick}
         disabled={backDisabled}
       >
-        ⬅️
+        Back
       </button>
 
       <div className="currentPage">{page}</div>
@@ -40,7 +40,7 @@ export default function Pagination(props) {
         onClick={handleNextClick}
         disabled={nextDisabled}
       >
-        ➡️
+        Forward
       </button>
     </div>
   );

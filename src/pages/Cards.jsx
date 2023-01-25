@@ -1,49 +1,52 @@
 import React from "react";
-import CardList from "../components/CardList";
 import CardFilter from "../components/CardFilter";
-//import hsCardClient from "../services/hsCardClient";
 import { useQuery } from "react-query";
 import axios from "axios";
+import CardList from "../components/CardList";
 
 export default function Cards() {
-  const newSearchParam = new URLSearchParams().append("class", 12);
-  const [searchParams, setSearchParam] = React.useState(newSearchParam);
+  const baseUrl = new URL("http://localhost:3030/cards?");
+  const [searchParams, setSearchParams] = React.useState(
+    new URLSearchParams("?class=12&limit=3")
+  );
 
   const {
     data: cardsData,
-    isLoading,
     isError,
+    refetch,
   } = useQuery(["cardsData"], () => {
-    console.log(searchParams);
-    return axios
-      .get("http://localhost:3030/cards?" + searchParams.toString())
-      .then((res) => res.data);
+    let newUrl = baseUrl.toString() + searchParams.toString();
+    return axios.get(newUrl).then((res) => res.data);
   });
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
+  // if (isLoading) {
+  //   return <p>Loading...</p>;
+  // }
 
   if (isError) {
     return <p>Error occured. Try again later</p>;
   }
 
   const nameUpdate = (name) => {
-    updateQuery("name", name);
+    let newSearchParams = searchParams;
+    if (name === "") {
+      newSearchParams.delete("name");
+    } else {
+      newSearchParams.set("name", name);
+    }
+    newSearchParams.set("page", 1);
+    setSearchParams(newSearchParams);
+    refetch();
   };
 
   const paginationUpdate = (page) => {
-    updateQuery("page", page);
+    let newSearchParams = searchParams;
+    newSearchParams.set("page", page);
+    setSearchParams(newSearchParams);
+    refetch();
   };
 
-  console.log(searchParams);
-  console.log(cardsData);
-
-  function updateQuery(name, value) {
-    let newSearchParam = searchParams;
-    newSearchParam.set(name, value);
-    setSearchParam(newSearchParam);
-  }
+  console.log(searchParams.toString());
 
   return (
     <div>
