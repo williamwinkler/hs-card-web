@@ -7,6 +7,16 @@ body {
   margin: 0;
 }
 
+.title {
+  text-align: center;
+  font-size: xx-large;
+}
+
+.cardPagination {
+  align-content: center;
+}
+
+/* 
 .container {
   text-align: center;
   padding: 2rem;
@@ -79,7 +89,7 @@ body {
   background-color: #777;
   margin: 1%;
   border-radius: 1rem;
-}
+} */
 
 /* .pagination button {
   size: 2rem;
