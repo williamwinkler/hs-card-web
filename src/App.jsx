@@ -1,7 +1,7 @@
 import React from "react";
 import { Layout, Menu, theme } from "antd";
 import { Route, Routes, Link } from "react-router-dom";
-import Home from "./pages/Home";
+//import Home from "./pages/Home";
 import Cards from "./pages/Cards";
 import About from "./pages/About";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -25,28 +25,15 @@ const App = () => {
               width: "100%",
             }}
           >
-            <div
-              style={{
-                float: "left",
-                width: 200,
-                height: 31,
-                margin: "16px 24px 16px 0",
-                color: "white",
-                fontSize: 23,
-                textAlign: "center",
-                text: "center",
-              }}
+            <Menu
+              theme="dark"
+              mode="horizontal"
+              defaultSelectedKeys={window.location.pathname}
             >
-              Title
-            </div>
-            <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["0"]}>
-              <Menu.Item key={0}>
+              <Menu.Item key={"/"}>
                 <Link to="/">Home</Link>
               </Menu.Item>
-              <Menu.Item key={1}>
-                <Link to="/cards">Cards</Link>
-              </Menu.Item>
-              <Menu.Item key={2}>
+              <Menu.Item key={"/about"}>
                 <Link to="/about">About</Link>
               </Menu.Item>
             </Menu>
@@ -65,8 +52,7 @@ const App = () => {
               }}
             >
               <Routes>
-                <Route path="/" element={<Home />}></Route>
-                <Route path="/cards" element={<Cards />}></Route>
+                <Route path="/" element={<Cards />}></Route>
                 <Route path="/about" element={<About />}></Route>
               </Routes>
             </div>
