@@ -7,6 +7,15 @@ body {
   margin: 0;
 }
 
+.title {
+  text-align: center;
+  font-size: xx-large;
+}
+
+.cardPagination {
+  align-content: center;
+}
+
 /* 
 .container {
   text-align: center;

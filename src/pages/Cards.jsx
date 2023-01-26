@@ -7,7 +7,7 @@ import CardList from "../components/CardList";
 export default function Cards() {
   const baseUrl = new URL("http://localhost:3030/cards?");
   const [searchParams, setSearchParams] = React.useState(
-    new URLSearchParams("?class=12&limit=3")
+    new URLSearchParams("?class=12&limit=8")
   );
 
   const {
@@ -35,13 +35,15 @@ export default function Cards() {
       newSearchParams.set("name", name);
     }
     newSearchParams.set("page", 1);
+    newSearchParams.delete("class");
     setSearchParams(newSearchParams);
     refetch();
   };
 
-  const paginationUpdate = (page) => {
+  const paginationUpdate = (page, limit) => {
     let newSearchParams = searchParams;
     newSearchParams.set("page", page);
+    newSearchParams.set("limit", limit);
     setSearchParams(newSearchParams);
     refetch();
   };
@@ -50,12 +52,19 @@ export default function Cards() {
 
   return (
     <div>
-      <h1>Cards</h1>
-      <CardFilter func={nameUpdate} />
+      <div className="title">
+        <h1>Hearthstone Card Viewer</h1>
+      </div>
+
+      <CardFilter nameUpdate={nameUpdate} />
       <CardList
         cards={cardsData?.cards}
-        pagination={{ page: cardsData?.page, pageCount: cardsData?.pageCount }}
-        func={paginationUpdate}
+        paginationUpdate={paginationUpdate}
+        pagination={{
+          page: cardsData?.page,
+          pageCount: cardsData?.pageCount,
+          cardCount: cardsData?.cardCount,
+        }}
       />
     </div>
   );
