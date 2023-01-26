@@ -12,8 +12,24 @@ body {
   font-size: xx-large;
 }
 
+.cardFilter {
+  padding: 2rem;
+}
+.cardList {
+  justify-content: center;
+}
+
 .cardPagination {
-  align-content: center;
+  padding: 2rem;
+}
+
+.loading {
+  margin: 20px 0;
+  margin-bottom: 20px;
+  padding: 30px 50px;
+  height: 500px;
+  text-align: center;
+  border-radius: 4px;
 }
 
 /* 

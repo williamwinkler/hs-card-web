@@ -12,18 +12,32 @@ export default function CardFilter(props) {
     }
   }
 
+  function handleMechanic(value) {
+    console.log(value);
+  }
+
   return (
-    <Space>
-      <Input.Search placeholder="Search" onSearch={handleSearch} />
-      <Select
-        style={{ width: 120 }}
-        allowClear
-        options={[{ value: "Spell", label: "Spell" }]}
-        onSelect={handleCardType}
-        onClear={handleCardType}
-        placeholder="Type"
-      />
-    </Space>
+    <div className="cardFilter">
+      <Space>
+        <Input.Search placeholder="Search" onSearch={handleSearch} />
+        <Select
+          style={{ width: 120 }}
+          allowClear
+          options={[{ value: "Divine Shield", label: "Divine Shield" }]}
+          onSelect={handleMechanic}
+          onClear={handleMechanic}
+          placeholder="Mechanic"
+        />
+        <Select
+          style={{ width: 120 }}
+          allowClear
+          options={[{ value: "Spell", label: "Spell" }]}
+          onSelect={handleCardType}
+          onClear={handleCardType}
+          placeholder="Card Type"
+        />
+      </Space>
+    </div>
   );
 }
 

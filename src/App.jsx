@@ -19,7 +19,6 @@ const App = () => {
         <Layout>
           <Header
             style={{
-              position: "sticky",
               top: 0,
               zIndex: 1,
               width: "100%",
@@ -47,7 +46,7 @@ const App = () => {
             <div
               style={{
                 padding: 24,
-                minHeight: 380,
+                minHeight: 1000,
                 background: colorBgContainer,
               }}
             >

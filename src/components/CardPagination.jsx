@@ -1,5 +1,5 @@
 import React from "react";
-import { Pagination } from "antd";
+import { Pagination, Space } from "antd";
 
 export default function CardPagination(props) {
   const page = props.pagination.page;
@@ -7,12 +7,11 @@ export default function CardPagination(props) {
   const cardCount = props.pagination.cardCount;
 
   function updatePagination(page, limit) {
-    console.log(page, limit);
     props.paginationUpdate(page, limit);
   }
 
   return (
-    <div style={cardPaginationStyle}>
+    <Space align="center">
       <Pagination
         defaultCurrent={page}
         total={cardCount}
@@ -20,15 +19,11 @@ export default function CardPagination(props) {
         showTotal={() => "Cards found: " + cardCount}
         onChange={updatePagination}
         pageSizeOptions={[10, 20, 40]}
+        defaultPageSize={10}
       />
-    </div>
+    </Space>
   );
 }
-
-const cardPaginationStyle = {
-  padding: "1rem",
-  justifyContent: "center",
-};
 
 // <div className="pagination">
 //   <button
