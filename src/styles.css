@@ -20,14 +20,14 @@ body {
 }
 
 .cardPagination {
-  padding: 2rem;
+  padding: 0rem 0.25rem 0.25rem 20rem;
 }
 
 .loading {
   margin: 20px 0;
   margin-bottom: 20px;
   padding: 30px 50px;
-  height: 500px;
+  height: 700px;
   text-align: center;
   border-radius: 4px;
 }

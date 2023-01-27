@@ -2,15 +2,15 @@ import React from "react";
 import { Pagination, Space } from "antd";
 
 export default function CardPagination(props) {
-  const page = props.pagination.page;
-  const cardCount = props.pagination.cardCount;
+  const page = props.page;
+  const cardCount = props.cardCount;
 
   function updatePagination(page, limit) {
     props.paginationUpdate(page, limit);
   }
 
   return (
-    <div className="cardPsagination">
+    <div className="cardPagination">
       <Space align="center">
         <Pagination
           defaultCurrent={page}

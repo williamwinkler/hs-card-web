@@ -6,12 +6,18 @@ import Cards from "./pages/Cards";
 import About from "./pages/About";
 import { QueryClient, QueryClientProvider } from "react-query";
 
-const { Header, Content, Footer } = Layout;
+const { Header, Content } = Layout;
 const App = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-  const client = new QueryClient();
+  const client = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+      },
+    },
+  });
 
   return (
     <>
@@ -56,11 +62,13 @@ const App = () => {
               </Routes>
             </div>
           </Content>
-          <Footer
+          {/* <Footer
             style={{
               textAlign: "center",
             }}
-          ></Footer>
+          >
+            test
+          </Footer> */}
         </Layout>
       </QueryClientProvider>
     </>
