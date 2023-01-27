@@ -13,10 +13,10 @@ body {
 }
 
 .cardFilter {
-  padding: 2rem;
+  padding: 4rem 1rem 1rem 10rem;
 }
 .cardList {
-  justify-content: center;
+  padding: 2rem;
 }
 
 .cardPagination {

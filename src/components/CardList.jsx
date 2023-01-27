@@ -8,35 +8,27 @@ export default function CardList(props) {
     return <div style={{ height: "1000px" }}>No cards found...</div>;
   }
 
-  const cardWidth = "20%";
-
   let gridCards = [];
   cards.map((card) => {
     gridCards.push(
-      <Card.Grid
-        key={card.id}
-        style={{
-          width: cardWidth,
-          height: "420px",
-          textAlign: "center",
-          alignItems: "center",
-          background: "white",
-        }}
-      >
-        <Image src={card.image} height="100%" placeholder={true} />
-      </Card.Grid>
+      <Image
+        src={card.image}
+        height="25rem"
+        preview={true}
+        placeholder={true}
+      />
     );
   });
 
   return (
     <>
-      <Card title="Cards">{gridCards}</Card>
-      <div className="cardPagination">
-        <CardPagination
-          pagination={props.pagination}
-          paginationUpdate={props.paginationUpdate}
-        />
+      <div className="cardList">
+        <Card title="Cards">{gridCards}</Card>
       </div>
+      <CardPagination
+        pagination={props.pagination}
+        paginationUpdate={props.paginationUpdate}
+      />
     </>
   );
 }
