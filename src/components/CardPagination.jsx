@@ -3,15 +3,19 @@ import { Pagination, Space } from "antd";
 
 export default function CardPagination(props) {
   const page = props.page;
-  const cardCount = props.cardCount;
+  let cardCount = props.cardCount;
 
   function updatePagination(page, limit) {
     props.paginationUpdate(page, limit);
   }
 
+  if (!cardCount) {
+    cardCount = 0;
+  }
+
   return (
     <div className="cardPagination">
-      <Space align="center">
+      <Space>
         <Pagination
           defaultCurrent={page}
           total={cardCount}

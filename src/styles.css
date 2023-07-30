@@ -20,7 +20,9 @@ body {
 }
 
 .cardPagination {
-  padding: 0rem 0.25rem 0.25rem 20rem;
+  /* padding: 0rem 0.25rem 0.25rem 20rem; */
+  justify-content: center;
+  align-items: center;
 }
 
 .loading {

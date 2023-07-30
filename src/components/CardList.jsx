@@ -4,21 +4,27 @@ import { Card, Image, Spin } from "antd";
 import axios from "axios";
 import CardPagination from "./CardPagination";
 
-export default function CardList() {
-  const baseUrl = new URL("http://localhost:3030/cards?");
-  const [searchParams, setSearchParams] = React.useState(
-    new URLSearchParams("?class=12&limit=10")
-  );
+export default function CardList(props) {
+  const [page, setPage] = React.useState(1);
+  const [limit, setLimit] = React.useState(10);
+  const cardUrl = "http://localhost:3030/cards?";
 
   const {
     data: cardsData,
     isError,
     isLoading,
     refetch,
-  } = useQuery(["cardsData", searchParams], () => {
-    let newUrl = baseUrl.toString() + searchParams.toString();
-    return axios.get(newUrl).then((res) => res.data);
+  } = useQuery(["cards", page, limit], () => {
+    props.params.set("page", page);
+    props.params.set("limit", limit);
+    console.log(cardUrl + props.params.toString());
+    return axios.get(cardUrl + props.params.toString()).then((res) => res.data);
   });
+
+  React.useEffect(() => {
+    setPage(1);
+    refetch();
+  }, [props.params]);
 
   let cardContent;
   if (isLoading) {
@@ -33,6 +39,12 @@ export default function CardList() {
         <p>An error occured. Try again later.</p>
       </div>
     );
+  } else if (cardsData?.cards === null) {
+    cardContent = (
+      <div className="error">
+        <p>No cards where found...</p>
+      </div>
+    );
   } else {
     const cardPictures = [];
     cardsData?.cards.map((card) => {
@@ -42,6 +54,7 @@ export default function CardList() {
             key={card.id}
             src={card.image}
             height="25rem"
+            width="18rem"
             preview={true}
             placeholder={true}
             loading="lazy"
@@ -53,11 +66,8 @@ export default function CardList() {
   }
 
   const paginationUpdate = (page, limit) => {
-    let newSearchParams = searchParams;
-    newSearchParams.set("page", page);
-    newSearchParams.set("limit", limit);
-    setSearchParams(newSearchParams);
-    refetch();
+    setPage(page);
+    setLimit(limit);
   };
 
   return (
@@ -65,13 +75,12 @@ export default function CardList() {
       <div className="cardList">
         <Card title="Cards">{cardContent}</Card>
       </div>
-      {!isLoading && !isError && (
-        <CardPagination
-          cardCount={cardsData?.cardCount}
-          page={cardsData?.page}
-          paginationUpdate={paginationUpdate}
-        />
-      )}
+
+      <CardPagination
+        cardCount={cardsData?.cardCount}
+        page={cardsData?.page}
+        paginationUpdate={paginationUpdate}
+      />
     </>
   );
 }

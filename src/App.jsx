@@ -1,7 +1,6 @@
 import React from "react";
 import { Layout, Menu, theme } from "antd";
 import { Route, Routes, Link } from "react-router-dom";
-//import Home from "./pages/Home";
 import Cards from "./pages/Cards";
 import About from "./pages/About";
 import { QueryClient, QueryClientProvider } from "react-query";
