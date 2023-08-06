@@ -2,7 +2,6 @@ import React from "react";
 import { Layout, Menu, theme } from "antd";
 import { Route, Routes, Link } from "react-router-dom";
 import Cards from "./pages/Cards";
-import About from "./pages/About";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 const { Header, Content } = Layout;
@@ -37,9 +36,6 @@ const App = () => {
               <Menu.Item key={"/"}>
                 <Link to="/">Home</Link>
               </Menu.Item>
-              <Menu.Item key={"/about"}>
-                <Link to="/about">About</Link>
-              </Menu.Item>
             </Menu>
           </Header>
           <Content
@@ -57,7 +53,6 @@ const App = () => {
             >
               <Routes>
                 <Route path="/" element={<Cards />}></Route>
-                <Route path="/about" element={<About />}></Route>
               </Routes>
             </div>
           </Content>

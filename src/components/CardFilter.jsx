@@ -1,9 +1,9 @@
-import { Space, Input, Select, Switch } from "antd";
+import { Input, Select } from "antd";
 import axios from "axios";
 import React from "react";
 import { useQuery } from "react-query";
 
-const baseUrl = "http://localhost:3030";
+const baseUrl = "https://hscards.duckdns.org/api/v1";
 
 export default function CardFilter(props) {
   const [name, setName] = React.useState();
@@ -12,8 +12,9 @@ export default function CardFilter(props) {
   const [rarity, setRarity] = React.useState();
   const [set, setSet] = React.useState();
   const [classId, setClassId] = React.useState();
+  const [attack, setAttack] = React.useState();
+  const [health, setHealth] = React.useState();
   const [mana, setMana] = React.useState();
-  const [golden, setGolden] = React.useState();
 
   const { data: typesData } = useQuery("types", () => {
     return axios.get(baseUrl + "/types").then((res) => res.data);
@@ -103,19 +104,31 @@ export default function CardFilter(props) {
         rarity: rarity,
         set: set,
         class: classId,
+        attack: attack,
+        health: health,
         mana: mana,
-        golden: golden,
       };
 
       console.log(newFilter);
       props.updateFilter(newFilter);
     }
-  }, [name, mechanics, type, rarity, set, classId, mana, golden, typesData]);
+  }, [
+    name,
+    mechanics,
+    type,
+    rarity,
+    set,
+    classId,
+    attack,
+    health,
+    mana,
+    typesData,
+  ]);
 
   return (
     <div className="cardFilter">
-      <Space block={true}>
-        <Input.Search placeholder="Search" onChange={updateName} />
+      <Input.Search placeholder="Search" onChange={updateName} />
+      <div className="advanced">
         <Select
           style={{ width: 120 }}
           options={types}
@@ -125,7 +138,7 @@ export default function CardFilter(props) {
           defaultValue={"Minion"}
         />
         <Select
-          style={{ width: 180 }}
+          style={{ width: 120 }}
           mode="multiple"
           allowClear
           options={keywords}
@@ -136,15 +149,15 @@ export default function CardFilter(props) {
           placeholder="Mechanic"
         />
         <Select
-          style={{ width: 120 }}
           allowClear
+          style={{ width: 120 }}
           options={rarities}
           onSelect={setRarity}
           onClear={setRarity}
           placeholder="Rarity"
         />
         <Select
-          style={{ width: 220 }}
+          style={{ width: 200 }}
           allowClear
           options={sets}
           onSelect={setSet}
@@ -152,27 +165,37 @@ export default function CardFilter(props) {
           placeholder="Set"
         />
         <Select
-          style={{ width: 180 }}
+          style={{ width: 160 }}
           allowClear
           options={classes}
           onSelect={setClassId}
           onClear={setClassId}
           placeholder="Class"
         />
+      </div>
+      <div className="attack_health_mana">
         <Select
-          style={{ width: 120 }}
+          allowClear
+          options={manaOptions}
+          onSelect={setAttack}
+          onClear={setAttack}
+          placeholder="Attack"
+        />
+        <Select
+          allowClear
+          options={manaOptions}
+          onSelect={setHealth}
+          onClear={setHealth}
+          placeholder="Health"
+        />
+        <Select
           allowClear
           options={manaOptions}
           onSelect={setMana}
           onClear={setMana}
           placeholder="Mana"
         />
-        <Switch
-          onChange={setGolden}
-          checkedChildren="Gold"
-          unCheckedChildren="Normal"
-        />
-      </Space>
+      </div>
     </div>
   );
 }

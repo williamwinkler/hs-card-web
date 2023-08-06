@@ -19,6 +19,8 @@ export default function Cards() {
     params = modifyParams(params, "rarity", filter.rarity);
     params = modifyParams(params, "set", filter.set);
     params = modifyParams(params, "class", filter.class);
+    params = modifyParams(params, "attack", filter.attack);
+    params = modifyParams(params, "health", filter.health);
     params = modifyParams(params, "manaCost", filter.mana);
   }
 

@@ -1,13 +1,14 @@
 import React from "react";
 import { useQuery } from "react-query";
-import { Card, Image, Spin } from "antd";
+import { Image, Spin } from "antd";
 import axios from "axios";
 import CardPagination from "./CardPagination";
 
 export default function CardList(props) {
   const [page, setPage] = React.useState(1);
   const [limit, setLimit] = React.useState(10);
-  const cardUrl = "http://localhost:3030/cards?";
+  const cardUrl = "https://hscards.duckdns.org/api/v1/cards?";
+  const isMobile = window.innerWidth <= 767; // Set mobile breakpoint to 767 pixels
 
   const {
     data: cardsData,
@@ -36,33 +37,32 @@ export default function CardList(props) {
   } else if (isError) {
     cardContent = (
       <div className="error">
-        <p>An error occured. Try again later.</p>
+        <p>An error occurred. Try again later.</p>
       </div>
     );
   } else if (cardsData?.cards === null) {
     cardContent = (
       <div className="error">
-        <p>No cards where found...</p>
+        <p>No cards were found...</p>
       </div>
     );
   } else {
-    const cardPictures = [];
-    cardsData?.cards.map((card) => {
+    cardContent = (
       <div className="cardList">
-        {cardPictures.push(
+        {cardsData.cards.map((card) => (
           <Image
             key={card.id}
             src={card.image}
-            height="25rem"
-            width="18rem"
+            height={isMobile ? "15rem" : "25rem"} // Adjust height for mobile view
+            width={isMobile ? "10rem" : "18rem"} // Adjust width for mobile view
             preview={true}
             placeholder={true}
             loading="lazy"
+            style={{ marginBottom: "10px" }} // Add some space between cards
           />
-        )}
-      </div>;
-    });
-    cardContent = cardPictures;
+        ))}
+      </div>
+    );
   }
 
   const paginationUpdate = (page, limit) => {
@@ -72,9 +72,7 @@ export default function CardList(props) {
 
   return (
     <>
-      <div className="cardList">
-        <Card title="Cards">{cardContent}</Card>
-      </div>
+      {cardContent}
 
       <CardPagination
         cardCount={cardsData?.cardCount}

@@ -12,11 +12,38 @@ body {
   font-size: xx-large;
 }
 
+/* CardFilter.css */
+
+/* CardFilter.css */
+
 .cardFilter {
-  padding: 4rem 1rem 1rem 10rem;
-}
-.cardList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   padding: 2rem;
+}
+
+.cardFilter .advanced,
+.cardFilter .attack_health_mana {
+  display: flex;
+  align-items: center;
+  padding: 2rem;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5%;
+}
+
+/* Adjust the width of the Search bar */
+.cardFilter .ant-input-search {
+  width: 20rem;
+}
+
+/* Media query for mobile view */
+@media (max-width: 767px) {
+  .cardFilter .advanced {
+    flex-direction: column;
+  }
 }
 
 .cardPagination {
@@ -34,7 +61,7 @@ body {
   border-radius: 4px;
 }
 
-/* 
+/*
 .container {
   text-align: center;
   padding: 2rem;
