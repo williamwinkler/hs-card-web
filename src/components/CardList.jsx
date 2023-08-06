@@ -52,8 +52,8 @@ export default function CardList(props) {
           <Image
             key={card.id}
             src={card.image}
-            height={isMobile ? "15rem" : "25rem"} // Adjust height for mobile view
-            width={isMobile ? "10rem" : "18rem"} // Adjust width for mobile view
+            height={"25rem"}
+            width={"18rem"}
             preview={true}
             placeholder={true}
             loading="lazy"
