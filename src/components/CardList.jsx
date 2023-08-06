@@ -8,7 +8,6 @@ export default function CardList(props) {
   const [page, setPage] = React.useState(1);
   const [limit, setLimit] = React.useState(10);
   const cardUrl = "https://hscards.duckdns.org/api/v1/cards?";
-  const isMobile = window.innerWidth <= 767; // Set mobile breakpoint to 767 pixels
 
   const {
     data: cardsData,
