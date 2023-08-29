@@ -8,7 +8,7 @@ const baseUrl = "https://hscards.duckdns.org/api/v1";
 export default function CardFilter(props) {
   const [name, setName] = React.useState();
   const [mechanics, setMechanics] = React.useState([]);
-  const [type, setType] = React.useState([4, 5, 7]);
+  const [type, setType] = React.useState();
   const [rarity, setRarity] = React.useState();
   const [set, setSet] = React.useState();
   const [classId, setClassId] = React.useState();
@@ -113,11 +113,7 @@ export default function CardFilter(props) {
       const newFilter = {
         name: name,
         keywords: mechanics,
-        type: type
-          ? type
-          : types
-              .filter((e) => ["Minion", "Spell", "Weapon"].includes(e.label))
-              .map((e) => e.value),
+        type: type,
         rarity: rarity,
         set: set,
         class: classId,

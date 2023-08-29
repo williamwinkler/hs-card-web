@@ -6,6 +6,9 @@ export default function CardPagination(props) {
   let cardCount = props.cardCount;
 
   function updatePagination(page, limit) {
+    if (page === 0) {
+      page = 1;
+    }
     props.paginationUpdate(page, limit);
   }
 

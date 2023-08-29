@@ -17,6 +17,10 @@ export default function CardList(props) {
   } = useQuery(["cards", page, limit], () => {
     props.params.set("page", page);
     props.params.set("limit", limit);
+    if (!props.params.has("type")) {
+      props.params.set("type", [4, 5, 7]);
+    }
+
     return axios.get(cardUrl + props.params.toString()).then((res) => res.data);
   });
 
