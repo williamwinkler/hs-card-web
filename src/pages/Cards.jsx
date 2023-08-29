@@ -24,8 +24,6 @@ export default function Cards() {
     params = modifyParams(params, "manaCost", filter.mana);
   }
 
-  console.log(params);
-
   return (
     <div>
       <div className="title">
@@ -41,11 +39,14 @@ export default function Cards() {
 function modifyParams(params, paramName, paramValue) {
   if (
     (paramName === "keywords" || paramName === "type") &&
-    paramValue &&
     Array.isArray(paramValue)
   ) {
-    // Serialize the array of keywords into a comma-separated string
-    params.set(paramName, paramValue.join(","));
+    if (paramValue.length === 0) {
+      // Remove the parameter if the array is empty
+      params.delete(paramName);
+    } else {
+      params.set(paramName, paramValue.join(","));
+    }
   } else if (paramValue !== undefined) {
     params.set(paramName, paramValue);
   } else {
