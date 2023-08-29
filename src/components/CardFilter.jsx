@@ -8,7 +8,7 @@ const baseUrl = "https://hscards.duckdns.org/api/v1";
 export default function CardFilter(props) {
   const [name, setName] = React.useState();
   const [mechanics, setMechanics] = React.useState([]);
-  const [type, setType] = React.useState([]);
+  const [type, setType] = React.useState([4, 5, 7]);
   const [rarity, setRarity] = React.useState();
   const [set, setSet] = React.useState();
   const [classId, setClassId] = React.useState();
@@ -125,7 +125,7 @@ export default function CardFilter(props) {
         health: health,
         mana: mana,
       };
-      console.log(newFilter);
+
       props.updateFilter(newFilter);
     }
   }, [
