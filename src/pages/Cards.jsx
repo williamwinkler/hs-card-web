@@ -39,7 +39,11 @@ export default function Cards() {
 }
 
 function modifyParams(params, paramName, paramValue) {
-  if (paramName === "keywords" && paramValue && Array.isArray(paramValue)) {
+  if (
+    (paramName === "keywords" || paramName === "type") &&
+    paramValue &&
+    Array.isArray(paramValue)
+  ) {
     // Serialize the array of keywords into a comma-separated string
     params.set(paramName, paramValue.join(","));
   } else if (paramValue !== undefined) {

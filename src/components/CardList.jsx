@@ -56,8 +56,7 @@ export default function CardList(props) {
             width={"18rem"}
             preview={true}
             placeholder={true}
-            loading="lazy"
-            style={{ marginBottom: "10px" }} // Add some space between cards
+            loading="eager"
           />
         ))}
       </div>
@@ -72,12 +71,13 @@ export default function CardList(props) {
   return (
     <>
       {cardContent}
-
-      <CardPagination
-        cardCount={cardsData?.cardCount}
-        page={cardsData?.page}
-        paginationUpdate={paginationUpdate}
-      />
+      <div className="pagination">
+        <CardPagination
+          cardCount={cardsData?.cardCount}
+          page={cardsData?.page}
+          paginationUpdate={paginationUpdate}
+        />
+      </div>
     </>
   );
 }

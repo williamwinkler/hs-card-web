@@ -8,7 +8,7 @@ const baseUrl = "https://hscards.duckdns.org/api/v1";
 export default function CardFilter(props) {
   const [name, setName] = React.useState();
   const [mechanics, setMechanics] = React.useState([]);
-  const [type, setType] = React.useState();
+  const [type, setType] = React.useState([]);
   const [rarity, setRarity] = React.useState();
   const [set, setSet] = React.useState();
   const [classId, setClassId] = React.useState();
@@ -21,6 +21,9 @@ export default function CardFilter(props) {
   });
   let types = [];
   typesData?.forEach((e) => {
+    if (e.name === "HeroPower" || e.name === "Reward") {
+      return;
+    }
     types.push({
       value: e.id,
       label: e.name,
@@ -95,12 +98,26 @@ export default function CardFilter(props) {
     }
   }
 
+  function updateType(selectedType) {
+    if (type && type.includes(selectedType)) {
+      setType(type.filter((type) => type !== selectedType));
+    } else if (type && type.length > 0) {
+      setType([...type, selectedType]);
+    } else {
+      setType([selectedType]);
+    }
+  }
+
   React.useEffect(() => {
     if (typesData && !typesData.isLoading) {
       const newFilter = {
         name: name,
         keywords: mechanics,
-        type: type ? type : types.find((x) => x.label === "Minion")?.value,
+        type: type
+          ? type
+          : types
+              .filter((e) => ["Minion", "Spell", "Weapon"].includes(e.label))
+              .map((e) => e.value),
         rarity: rarity,
         set: set,
         class: classId,
@@ -108,7 +125,6 @@ export default function CardFilter(props) {
         health: health,
         mana: mana,
       };
-
       console.log(newFilter);
       props.updateFilter(newFilter);
     }
@@ -132,10 +148,13 @@ export default function CardFilter(props) {
         <Select
           style={{ width: 120 }}
           options={types}
-          onSelect={setType}
+          onSelect={updateType}
+          onDeselect={updateType}
           onClear={setType}
           placeholder="Type"
-          defaultValue={"Minion"}
+          allowClear
+          mode="multiple"
+          placement="topLeft"
         />
         <Select
           style={{ width: 120 }}
@@ -147,6 +166,7 @@ export default function CardFilter(props) {
           onDeselect={updateMechanics}
           onClear={setMechanics}
           placeholder="Mechanic"
+          placement="topLeft"
         />
         <Select
           allowClear
