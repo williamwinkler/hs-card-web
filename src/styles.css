@@ -69,6 +69,11 @@ body {
   padding: 0rem;
 }
 
+.error {
+  text-align: center;
+  font-size: x-large;
+}
+
 .pagination {
   display: flex;
   flex-wrap: wrap;
