@@ -7,7 +7,7 @@ import CardPagination from "./CardPagination";
 export default function CardList(props) {
   const [page, setPage] = React.useState(1);
   const [limit, setLimit] = React.useState(10);
-  const cardUrl = "https://hscards.duckdns.org/api/v1/cards?";
+  const cardUrl = "https://" + window.location.hostname + "/api/v1/cards?";
 
   const {
     data: cardsData,

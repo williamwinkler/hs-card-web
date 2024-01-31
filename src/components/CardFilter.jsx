@@ -3,7 +3,7 @@ import axios from "axios";
 import React from "react";
 import { useQuery } from "react-query";
 
-const baseUrl = "https://hscards.duckdns.org/api/v1";
+const baseUrl = "https://" + window.location.hostname + "/api/v1";
 
 export default function CardFilter(props) {
   const [name, setName] = React.useState();

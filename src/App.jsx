@@ -56,13 +56,6 @@ const App = () => {
               </Routes>
             </div>
           </Content>
-          {/* <Footer
-            style={{
-              textAlign: "center",
-            }}
-          >
-            test
-          </Footer> */}
         </Layout>
       </QueryClientProvider>
     </>
