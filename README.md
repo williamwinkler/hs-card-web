@@ -4,7 +4,7 @@ A webpage for viewing [Hearthstone](https://hearthstone.blizzard.com/en-us) card
 
 ## Link
 
-The webpage can be viewed on: [hscards.duckdns.org](https://hscards.duckdns.org).
+The webpage can be viewed on: [hscards.william-winkler.com](https://hscards.william-winkler.org).
 
 ## Backend
 
