@@ -7,6 +7,11 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  preview: {
+    host: '0.0.0.0',
+    port: 3000,
+    allowedHosts: ['hscards.william-winkler.com'],
+  },
   resolve: {
     dedupe: ['react', 'react-dom'],
   },
