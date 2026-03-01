@@ -1,12 +1,25 @@
 import type {
   Cards,
-  CardsListParams,
   Classes,
   Keywords,
   Rarities,
   Sets,
   Types,
 } from './api-client'
+
+export interface CardsListParams {
+  name?: string
+  manaCost?: number
+  health?: number
+  attack?: number
+  class?: number
+  rarity?: number
+  type?: number[]
+  keywords?: number[]
+  set?: number
+  page?: number
+  limit?: number
+}
 
 const DEFAULT_DEV_API_BASE_URL = 'https://hscards.william-winkler.com/api/v1'
 const REQUEST_TIMEOUT_MS = 10_000

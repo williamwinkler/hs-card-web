@@ -3,13 +3,13 @@ import { Select } from 'antd'
 import { useEffect, useMemo, useState } from 'react'
 
 import {
+  type CardsListParams,
   fetchClasses,
   fetchKeywords,
   fetchRarities,
   fetchSets,
   fetchTypes,
 } from '~/api'
-import type { CardsListParams } from '~/api/api-client'
 import { normalizeCardsFilter } from '~/lib/cards-filter'
 import { toSelectOptions } from '~/lib/select-options'
 import { useSearch } from '~/routes/__root'

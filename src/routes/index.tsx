@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
 
-import type { CardsListParams } from '~/api/api-client'
+import type { CardsListParams } from '~/api'
 import CardFilter from '~/components/CardFilter'
 import CardList from '~/components/CardList'
 

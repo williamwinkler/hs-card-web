@@ -1,4 +1,4 @@
-import type { CardsListParams } from '~/api/api-client'
+import type { CardsListParams } from '~/api'
 
 interface NormalizeCardsFilterOptions {
   defaultTypes?: number[]
