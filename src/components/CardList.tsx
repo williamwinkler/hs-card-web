@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import CardPagination from './CardPagination'
 
 import { type CardsListParams, fetchCards } from '~/api'
-import type { Card } from '~/api/api-client'
+import type { Card } from '~/api/types'
 import {
   buildCardsQueryKey,
   cardsFilterSignature,

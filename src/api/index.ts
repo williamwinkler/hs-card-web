@@ -5,7 +5,7 @@ import type {
   Rarities,
   Sets,
   Types,
-} from './api-client'
+} from './types'
 
 export interface CardsListParams {
   name?: string
