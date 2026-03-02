@@ -4,7 +4,7 @@ A webpage for viewing [Hearthstone](https://hearthstone.blizzard.com/en-us) card
 
 ## Production Link
 
-The webpage can be viewed on: [hscards.william-winkler.com](https://hscards.william-winkler.org).
+The webpage can be viewed on: [hscards.william-winkler.com](https://hscards.william-winkler.com).
 
 ## Environment
 
