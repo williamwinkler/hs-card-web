@@ -8,6 +8,9 @@ import {
 import { ConfigProvider, theme, Input } from 'antd'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
+import {
+  AntdStyleCacheProvider,
+} from '~/lib/antd-style-cache'
 import { useDebouncedValue } from '~/hooks/useDebouncedValue'
 import { normalizeSearchTerm } from '~/lib/search'
 import '~/styles.css'
@@ -36,24 +39,13 @@ const queryClient = new QueryClient({
   },
 })
 
-// Hearthstone/WoW themed Ant Design tokens
 const hearthstoneTheme = {
-  light: {
-    colorPrimary: '#B8860B', // Dark golden rod
-    colorBgContainer: '#FAF3E5',
-    colorBgElevated: '#FFF8EC',
-    colorBorder: '#D4A574',
-    colorText: '#3D2314',
-    colorTextSecondary: '#6B4423',
-  },
-  dark: {
-    colorPrimary: '#F0B132', // Hearthstone gold
-    colorBgContainer: '#2D241E',
-    colorBgElevated: '#3D312A',
-    colorBorder: '#5C4A3D',
-    colorText: '#F5E6C8',
-    colorTextSecondary: '#C4A77D',
-  },
+  colorPrimary: '#F0B132', // Hearthstone gold
+  colorBgContainer: '#2D241E',
+  colorBgElevated: '#3D312A',
+  colorBorder: '#5C4A3D',
+  colorText: '#F5E6C8',
+  colorTextSecondary: '#C4A77D',
 }
 
 export const Route = createRootRoute({
@@ -82,10 +74,7 @@ export const Route = createRootRoute({
 })
 
 function RootComponent() {
-  const [isDarkMode, setIsDarkMode] = useState(true)
   const [searchTerm, setSearchTerm] = useState<string | undefined>()
-
-  const tokens = isDarkMode ? hearthstoneTheme.dark : hearthstoneTheme.light
 
   const searchContextValue = useMemo(
     () => ({ searchTerm, setSearchTerm }),
@@ -93,39 +82,35 @@ function RootComponent() {
   )
 
   return (
-    <RootDocument isDarkMode={isDarkMode}>
-      <ConfigProvider
-        theme={{
-          algorithm: isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
-          token: {
-            colorPrimary: tokens.colorPrimary,
-            colorBgContainer: tokens.colorBgContainer,
-            colorBgElevated: tokens.colorBgElevated,
-            colorBorder: tokens.colorBorder,
-            colorText: tokens.colorText,
-            colorTextSecondary: tokens.colorTextSecondary,
-          },
-        }}
-      >
-        <QueryClientProvider client={queryClient}>
-          <SearchContext.Provider value={searchContextValue}>
-            <AppLayout isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
-          </SearchContext.Provider>
-        </QueryClientProvider>
-      </ConfigProvider>
+    <RootDocument>
+      <AntdStyleCacheProvider>
+        <ConfigProvider
+          theme={{
+            algorithm: theme.darkAlgorithm,
+            token: {
+              colorPrimary: hearthstoneTheme.colorPrimary,
+              colorBgContainer: hearthstoneTheme.colorBgContainer,
+              colorBgElevated: hearthstoneTheme.colorBgElevated,
+              colorBorder: hearthstoneTheme.colorBorder,
+              colorText: hearthstoneTheme.colorText,
+              colorTextSecondary: hearthstoneTheme.colorTextSecondary,
+            },
+          }}
+        >
+          <QueryClientProvider client={queryClient}>
+            <SearchContext.Provider value={searchContextValue}>
+              <AppLayout />
+            </SearchContext.Provider>
+          </QueryClientProvider>
+        </ConfigProvider>
+      </AntdStyleCacheProvider>
     </RootDocument>
   )
 }
 
-function RootDocument({
-  children,
-  isDarkMode,
-}: {
-  children: React.ReactNode
-  isDarkMode: boolean
-}) {
+function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={isDarkMode ? 'dark' : ''}>
+    <html lang="en" className="dark">
       <head>
         <HeadContent />
       </head>
@@ -140,12 +125,7 @@ function RootDocument({
   )
 }
 
-interface AppLayoutProps {
-  isDarkMode: boolean
-  setIsDarkMode: (value: boolean) => void
-}
-
-function AppLayout({ isDarkMode, setIsDarkMode }: AppLayoutProps) {
+function AppLayout() {
   const { setSearchTerm } = useSearch()
   const [searchInput, setSearchInput] = useState('')
   const debouncedSearchInput = useDebouncedValue(searchInput, 300)
@@ -185,48 +165,6 @@ function AppLayout({ isDarkMode, setIsDarkMode }: AppLayoutProps) {
                 size="middle"
               />
             </div>
-
-            {/* Theme Toggle */}
-            <button
-              onClick={() => setIsDarkMode(!isDarkMode)}
-              className="theme-toggle"
-              aria-label="Toggle theme"
-            >
-              <div className="theme-toggle-icons">
-                {/* Sun icon */}
-                <svg
-                  className={`theme-icon theme-icon--sun ${
-                    isDarkMode ? 'theme-icon--hidden' : 'theme-icon--visible'
-                  }`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-                  />
-                </svg>
-                {/* Moon icon */}
-                <svg
-                  className={`theme-icon theme-icon--moon ${
-                    isDarkMode ? 'theme-icon--visible' : 'theme-icon--hidden'
-                  }`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-                  />
-                </svg>
-              </div>
-            </button>
           </div>
         </div>
       </header>

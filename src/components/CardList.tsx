@@ -19,6 +19,69 @@ interface CardListProps {
 const DEFAULT_TYPES = [4, 5, 7]
 const CARDS_PER_PAGE = 8
 
+export function getTotalPages(cardCount: number, pageCount?: number): number {
+  if (typeof pageCount === 'number' && pageCount > 0) {
+    return pageCount
+  }
+
+  return Math.max(1, Math.ceil(cardCount / CARDS_PER_PAGE))
+}
+
+export function isEditableKeyboardTarget(target: EventTarget | null): boolean {
+  if (!(target instanceof HTMLElement)) {
+    return false
+  }
+
+  if (target.isContentEditable) {
+    return true
+  }
+
+  const tagName = target.tagName.toLowerCase()
+  return tagName === 'input' || tagName === 'textarea' || tagName === 'select'
+}
+
+interface KeyboardNavigationOptions {
+  currentPage: number
+  totalPages: number
+  key: string
+  target: EventTarget | null
+  isPreviewOpen?: boolean
+  defaultPrevented?: boolean
+  metaKey?: boolean
+  ctrlKey?: boolean
+  altKey?: boolean
+}
+
+export function getKeyboardNavigationPage({
+  currentPage,
+  totalPages,
+  key,
+  target,
+  isPreviewOpen = false,
+  defaultPrevented = false,
+  metaKey = false,
+  ctrlKey = false,
+  altKey = false,
+}: KeyboardNavigationOptions): number | null {
+  if (isPreviewOpen || defaultPrevented || metaKey || ctrlKey || altKey) {
+    return null
+  }
+
+  if (isEditableKeyboardTarget(target)) {
+    return null
+  }
+
+  if (key === 'ArrowRight' && currentPage < totalPages) {
+    return currentPage + 1
+  }
+
+  if (key === 'ArrowLeft' && currentPage > 1) {
+    return currentPage - 1
+  }
+
+  return null
+}
+
 export function getRarityColor(rarityId: Card['rarityId']): string {
   if (rarityId === 1) return 'rarity-common'
   if (rarityId === 3) return 'rarity-rare'
@@ -37,6 +100,14 @@ export function buildCardRenderKey(card: Card, index: number): string {
   }
 
   return `card-fallback-${index}-${card.name ?? 'unknown'}`
+}
+
+export function getCardSlots(cards: Card[], isFetching: boolean): Array<Card | null> {
+  if (cards.length === 0 && isFetching) {
+    return Array.from({ length: CARDS_PER_PAGE }, () => null)
+  }
+
+  return cards
 }
 
 function CardSkeleton({ keySuffix }: { keySuffix: number }) {
@@ -97,26 +168,6 @@ function CardImage({ card, isFetching }: { card: Card; isFetching: boolean }) {
           className={`card-image ${loaded ? 'is-loaded' : 'is-loading'}`}
           rootClassName="card-image-root"
           onLoad={() => setLoaded(true)}
-          preview={{
-            mask: (
-              <div className="card-preview-mask">
-                <svg
-                  className="card-preview-icon"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
-                  />
-                </svg>
-                View
-              </div>
-            ),
-          }}
         />
         {isFetching && (
           <div className="card-fetch-overlay" />
@@ -131,6 +182,7 @@ function CardImage({ card, isFetching }: { card: Card; isFetching: boolean }) {
 
 export default function CardList({ filter }: CardListProps) {
   const [page, setPage] = useState(1)
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false)
   const lastCardCount = useRef(0)
 
   const normalizedFilter = useMemo(
@@ -196,7 +248,34 @@ export default function CardList({ filter }: CardListProps) {
   const cards = cardsData?.cards ?? []
   const cardCount = cardsData?.cardCount ?? lastCardCount.current
   const currentPage = cardsData?.page ?? page
+  const totalPages = getTotalPages(cardCount, cardsData?.pageCount)
   const hasNoCards = !isFetching && cards.length === 0
+
+  useEffect(() => {
+    function handlePageKeyboardNavigation(event: KeyboardEvent) {
+      const nextPage = getKeyboardNavigationPage({
+        currentPage,
+        totalPages,
+        key: event.key,
+        target: event.target,
+        isPreviewOpen,
+        defaultPrevented: event.defaultPrevented,
+        metaKey: event.metaKey,
+        ctrlKey: event.ctrlKey,
+        altKey: event.altKey,
+      })
+
+      if (nextPage === null || nextPage === currentPage) {
+        return
+      }
+
+      event.preventDefault()
+      setPage(nextPage)
+    }
+
+    window.addEventListener('keydown', handlePageKeyboardNavigation)
+    return () => window.removeEventListener('keydown', handlePageKeyboardNavigation)
+  }, [currentPage, isPreviewOpen, totalPages])
 
   if (hasNoCards) {
     return (
@@ -226,13 +305,17 @@ export default function CardList({ filter }: CardListProps) {
     )
   }
 
-  const slots = Array.from({ length: CARDS_PER_PAGE }, (_, index) => cards[index] ?? null)
+  const slots = getCardSlots(cards, isFetching)
 
   return (
     <div className="cardlist">
       <div className="cardlist-grid-container">
         <div className="cardlist-grid">
-          <Image.PreviewGroup>
+          <Image.PreviewGroup
+            preview={{
+              onOpenChange: (visible) => setIsPreviewOpen(visible),
+            }}
+          >
             {slots.map((card, index) =>
               card ? (
                 <CardImage key={buildCardRenderKey(card, index)} card={card} isFetching={isFetching} />

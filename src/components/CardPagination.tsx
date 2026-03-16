@@ -1,4 +1,4 @@
-import { Pagination } from 'antd'
+import { Pagination, Tooltip } from 'antd'
 
 interface CardPaginationProps {
   cardCount: number
@@ -13,6 +13,30 @@ export default function CardPagination({
   onPageChange,
   disabled = false,
 }: CardPaginationProps) {
+  function renderPaginationItem(
+    _current: number,
+    type: 'page' | 'prev' | 'next' | 'jump-prev' | 'jump-next',
+    originalElement: React.ReactNode,
+  ) {
+    if (type === 'prev') {
+      return (
+        <Tooltip title="Previous page (Left arrow)">
+          <span>{originalElement}</span>
+        </Tooltip>
+      )
+    }
+
+    if (type === 'next') {
+      return (
+        <Tooltip title="Next page (Right arrow)">
+          <span>{originalElement}</span>
+        </Tooltip>
+      )
+    }
+
+    return originalElement
+  }
+
   return (
     <div className={`card-pagination ${disabled ? 'is-disabled' : ''}`}>
       <span className="card-pagination-label">
@@ -27,6 +51,7 @@ export default function CardPagination({
         showLessItems
         disabled={disabled}
         size="small"
+        itemRender={renderPaginationItem}
       />
     </div>
   )

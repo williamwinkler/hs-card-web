@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest'
 
-import { buildCardRenderKey, getRarityColor } from './CardList'
+import {
+  buildCardRenderKey,
+  getCardSlots,
+  getKeyboardNavigationPage,
+  getRarityColor,
+  getTotalPages,
+} from './CardList'
+import type { Card } from '~/api/types'
 
 describe('CardList helpers', () => {
   it('returns rarity gradient classes', () => {
@@ -64,5 +71,88 @@ describe('CardList helpers', () => {
     expect(keyFromId).toBe('card-id-42')
     expect(keyFromImage).toBe('card-image-https://cdn/image.png')
     expect(keyFallback).toBe('card-fallback-2-No Id')
+  })
+
+  it('computes total pages from card count when page count is absent', () => {
+    expect(getTotalPages(0)).toBe(1)
+    expect(getTotalPages(8)).toBe(1)
+    expect(getTotalPages(9)).toBe(2)
+    expect(getTotalPages(24, 5)).toBe(5)
+  })
+
+  it('returns the next or previous page for arrow key navigation', () => {
+    expect(
+      getKeyboardNavigationPage({
+        currentPage: 1,
+        totalPages: 3,
+        key: 'ArrowRight',
+        target: document.body,
+      }),
+    ).toBe(2)
+
+    expect(
+      getKeyboardNavigationPage({
+        currentPage: 2,
+        totalPages: 3,
+        key: 'ArrowLeft',
+        target: document.body,
+      }),
+    ).toBe(1)
+  })
+
+  it('ignores arrow navigation at bounds and in editable fields', () => {
+    const input = document.createElement('input')
+
+    expect(
+      getKeyboardNavigationPage({
+        currentPage: 3,
+        totalPages: 3,
+        key: 'ArrowRight',
+        target: document.body,
+      }),
+    ).toBeNull()
+
+    expect(
+      getKeyboardNavigationPage({
+        currentPage: 1,
+        totalPages: 3,
+        key: 'ArrowLeft',
+        target: document.body,
+      }),
+    ).toBeNull()
+
+    expect(
+      getKeyboardNavigationPage({
+        currentPage: 1,
+        totalPages: 3,
+        key: 'ArrowRight',
+        target: input,
+      }),
+    ).toBeNull()
+
+    expect(
+      getKeyboardNavigationPage({
+        currentPage: 2,
+        totalPages: 3,
+        key: 'ArrowRight',
+        target: document.body,
+        isPreviewOpen: true,
+      }),
+    ).toBeNull()
+  })
+
+  it('only shows loading skeleton slots during an empty fetch', () => {
+    const cards: Card[] = [
+      {
+        id: 1,
+        name: 'Test Card',
+        rarityId: 1,
+      },
+    ]
+
+    expect(getCardSlots([], true)).toHaveLength(8)
+    expect(getCardSlots(cards, false)).toEqual(cards)
+    expect(getCardSlots(cards, true)).toEqual(cards)
+    expect(getCardSlots([], false)).toEqual([])
   })
 })
